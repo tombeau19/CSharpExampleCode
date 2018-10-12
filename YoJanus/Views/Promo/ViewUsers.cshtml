@@ -1,0 +1,66 @@
+@model IEnumerable<YoJanus.Web.Models.Promocode_User_View>
+
+@{
+    ViewData["Title"] = "ViewUsers";
+}
+@{
+    Layout = "_Template";
+}
+
+  <link rel="stylesheet" href="/css/survey.css"/>
+  <link rel="stylesheet" href="/css/search-dropdown.css"/>
+
+<hr>
+<div>
+    <a href="/promo">Back to Promo Code Directory</a>
+</div>
+<hr>
+<h2>Promo Code Users</h2>
+@using (Html.BeginForm())
+{
+    <p>
+        @Html.TextBox("SearchString")  
+        <input type="submit" value="Search" /></p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Code", "ViewUsers", new { sortOrder = ViewBag.CodeSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Group Name", "ViewUsers", new { sortOrder = ViewBag.GroupNameSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("First Name", "ViewUsers", new { sortOrder = ViewBag.FirstNameSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Last Name", "ViewUsers", new { sortOrder = ViewBag.LastNameSortParm })
+            </th>
+            <th>
+                @Html.ActionLink("Email", "ViewUsers", new { sortOrder = ViewBag.EmailSortParm })
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

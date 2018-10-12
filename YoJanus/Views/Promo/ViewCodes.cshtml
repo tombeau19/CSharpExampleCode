@@ -1,0 +1,73 @@
+@model IEnumerable<YoJanus.Web.Models.PromoCodes>
+
+@{
+    ViewData["Title"] = "ViewCodes";
+}
+@{
+    Layout = "_Template";
+}
+  <link rel="stylesheet" href="/css/survey.css"/>
+  <link rel="stylesheet" href="/css/search-dropdown.css"/>
+<hr>
+<div>
+    <a href="/promo">Back to Promo Code Directory</a>
+</div>
+<hr>
+<h2>Promo Codes</h2>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GroupName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th> Delete </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GroupName)
+        </td>
+        <td>
+            @if(item.StartDate.HasValue) {@item.StartDate.Value.ToString("MM/dd/yyyy")}
+        </td>
+        <td>
+            @if(item.EndDate.HasValue) {@item.EndDate.Value.ToString("MM/dd/yyyy")}
+        </td>
+        <td>
+            <a href="#" class="btn" onclick="deletePromoCode('@item.ID')">Delete</a>  
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" language="javascript">
+        function deletePromoCode(id) {
+            $.post("@Url.Action("DeletePromoCode","Promo")", { id : id }, function (data) {
+                if (data.statusCode == '200') {
+                    alert ("Successfully deleted Promo Code");
+                    location.reload();
+                }
+                else {
+                    alert("Failed to delete Promo Code. You might have already deleted it.");
+                }
+            });
+        };
+    </script>
+}

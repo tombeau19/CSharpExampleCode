@@ -1,0 +1,116 @@
+@model YoJanus.Web.Models.PromoCodeUsers
+
+@{
+    ViewData["Title"] = "Thank You";
+}
+
+@{
+    Layout = "_Template";
+}
+<head>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/css/survey.css"/>
+        <link rel="stylesheet" href="~/css/thankyou-dropdown.css"/>
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/css/survey.min.css"/>
+        <link rel="stylesheet" href="~/css/thankyou-dropdown.min.css"/>
+    </environment>
+</head>
+
+<h2>Thank you for helping future renters!</h2> 
+<p><a asp-controller="Survey" asp-action="Feedback">Feedback or Recommendations</a></p>
+
+<div>
+    <a href="/Home/Index">Back to Homepage</a>
+</div>
+
+<div class="modal fade" id="modal2" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-width" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title centered">Yo! You've been entered to win $250!</h4>
+              <h4 class="centered">Want more money or other cool stuff? Enter a Promo Code!</h4>
+            </div>
+            <div class="clearfix modal-body">
+                <img src="/images/yojanuswinner.gif" alt="Winner! Winner!"  class="col-md-offset-1 img-responsive centered" style="max-height:255px;">
+                <form asp-controller="Promo" asp-action="EnterPromoCode">
+                    <div class="form-horizontal">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div>
+                            <label asp-for="Code" class="col-md-offset-3 col-md-9 control-label">Promo Code: </label>
+                            <div class="col-md-offset-3 col-md-9">
+                                <input asp-for="Code" class="form-control code" />
+                                <span asp-validation-for="Code" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <label asp-for="Email" class="col-md-offset-3 col-md-9 control-label">Email: </label>
+                            <div class="col-md-offset-3 col-md-9">
+                                <input asp-for="Email" class="form-control email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="col-md-offset-3 col-md-3">
+                                <input id="submitButton" type="submit" value="Submit" class="btn btn-default" />
+                            </div>
+                            <div class="col-md-4">
+                                <input id="submitButton" data-dismiss="modal" value="No Code" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer centered">
+            <p>Winners will be notified via Email. Submitting a Promo Code subscribes you to awesome <span style="font-style:italic;">and occasional</span> emails from yoJanus. View rules and regulations <span style="text-decoration:underline;"><a href="/Home/Terms">here</a></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+    <script>
+        $(document).ready(function() {
+            var state = (sessionStorage.getItem('seen') == 'seen') ? 'seen' : 'unseen';
+            if (state == 'unseen') {
+                $('#modal2').modal({keyboard: true});
+                sessionStorage.setItem('seen', 'seen');
+            }
+            $(".modal-button").hover(function() { // mouse in
+                $(this).addClass("modal-button-hover");
+                $(this).removeClass("modal-button-passive");
+            }, function() { // mouse out
+                $(this).addClass("modal-button-passive");
+                $(this).removeClass("modal-button-hover");
+            });
+            $(".btn").hover(function() { // in
+                $(this).addClass("btn-hover");
+                $(this).removeClass("btn-primary");
+            }, function() { // out
+                $(this).addClass("btn-primary");
+                $(this).removeClass("btn-hover");
+            });
+        });
+        $('form').submit(function () {
+            var code = $.trim($('.code').val());
+            var email = $.trim($('.email').val());
+            if (code  === '') {
+                alert('Please enter a Promo Code');
+                return false;
+            } else if (email  === '') {
+                alert('Please enter an email');
+                return false;
+            }
+        });
+    </script>
+}

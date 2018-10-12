@@ -1,0 +1,61 @@
+@model YoJanus.Web.Models.PromoCodes
+
+@{
+    ViewData["Title"] = "AddPromoCode";
+}
+@{
+    Layout = "_Template";
+}
+
+  <link rel="stylesheet" href="/css/survey.css"/>
+  <link rel="stylesheet" href="/css/search-dropdown.css"/>
+<hr>
+<div>
+    <a href="/promo">Back to Promo Code Directory</a>
+</div>
+<hr>
+
+<h2>Add a Promo Code</h2>
+
+<form asp-controller="Promo" asp-action="CreatePromoCode">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Code" class="col-md-10 control-label">Promo Code: </label>
+            <div class="col-md-10">
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="GroupName" class="col-md-10 control-label">Group Name: </label>
+            <div class="col-md-10">
+                <input asp-for="GroupName" class="form-control" />
+                <span asp-validation-for="GroupName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="StartDate" class="col-md-10 control-label">Start Date:</label>
+            <div class="col-md-10">
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EndDate" class="col-md-10 control-label">End Date: </label>
+            <div class="col-md-10">
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
